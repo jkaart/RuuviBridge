@@ -38,6 +38,7 @@ func MQTT(conf config.MQTTPublisher) chan<- parser.Measurement {
 	}
 	opts := mqtt.NewClientOptions()
 	opts.SetCleanSession(false)
+	opts.Retained(true)
 	opts.AddBroker(server)
 	opts.SetClientID(clientID)
 	opts.SetUsername(conf.Username)
