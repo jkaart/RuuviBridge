@@ -38,7 +38,6 @@ func MQTT(conf config.MQTTPublisher) chan<- parser.Measurement {
 	}
 	opts := mqtt.NewClientOptions()
 	opts.SetCleanSession(false)
-	opts.Retained(true)
 	opts.AddBroker(server)
 	opts.SetClientID(clientID)
 	opts.SetUsername(conf.Username)
@@ -81,7 +80,7 @@ func MQTT(conf config.MQTTPublisher) chan<- parser.Measurement {
 			if err != nil {
 				log.WithError(err).Error("Failed to serialize measurement")
 			} else {
-				client.Publish(conf.TopicPrefix+"/"+measurement.Mac, 0, false, string(data))
+				client.Publish(conf.TopicPrefix+"/"+measurement.Mac, 0, true, string(data))
 				if conf.HomeassistantDiscoveryPrefix != "" {
 					publishHomeAssistantDiscoveries(client, conf, measurement)
 				}
